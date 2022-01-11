@@ -1,12 +1,23 @@
 package main
 
 import (
+	"irisweb25/models"
+
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/logger"
 	"github.com/kataras/iris/v12/middleware/recover"
 )
 
 func NewApp() *iris.Application {
+	models.Register()
+	models.Db.AutoMigrate(
+		&models.User{},
+		// &models.Oauth
+	)
+
+	iris.RegisterOnInterrupt(func() {
+		_ = models.Db
+	})
 	app := iris.New()
 	app.Logger().SetLevel("debug")
 	app.Use(recover.New())
