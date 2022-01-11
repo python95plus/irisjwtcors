@@ -12,7 +12,7 @@ func NewApp() *iris.Application {
 	models.Register()
 	models.Db.AutoMigrate(
 		&models.User{},
-		// &models.Oauth
+		&models.OauthToken{},
 	)
 
 	iris.RegisterOnInterrupt(func() {
